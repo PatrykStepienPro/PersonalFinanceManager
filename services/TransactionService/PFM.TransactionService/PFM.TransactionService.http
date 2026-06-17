@@ -1,0 +1,6 @@
+@PFM.TransactionService_HostAddress = http://localhost:5159
+
+GET {{PFM.TransactionService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

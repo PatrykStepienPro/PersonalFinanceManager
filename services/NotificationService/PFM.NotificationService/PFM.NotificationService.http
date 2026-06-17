@@ -1,0 +1,6 @@
+@PFM.NotificationService_HostAddress = http://localhost:5043
+
+GET {{PFM.NotificationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
