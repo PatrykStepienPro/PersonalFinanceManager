@@ -2,7 +2,7 @@ namespace PFM.Contracts.Events;
 
 public record TransactionCreated
 {
-    public Guid TransactionId { get; init; }
+    public int TransactionId { get; init; }
     public Guid UserId { get; init; }
     public decimal Amount { get; init; }
     public int CategoryId { get; init; }

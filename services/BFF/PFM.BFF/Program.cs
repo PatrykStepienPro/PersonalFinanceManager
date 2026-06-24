@@ -1,5 +1,4 @@
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,12 +22,12 @@ builder.Services.AddAuthentication()
 // Add CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins("http://localhost:5173")
-            .AllowAnyHeader()
-            .AllowAnyMethod(); 
-    });
+   options.AddPolicy("AllowFrontend", policy =>
+   {
+       policy.WithOrigins("http://localhost:5173")
+           .AllowAnyHeader()
+           .AllowAnyMethod(); 
+   });
 });
 
 // YARP configuration
