@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using PFM.Contracts.Helpers;
 using PFM.NotificationService.Data;
