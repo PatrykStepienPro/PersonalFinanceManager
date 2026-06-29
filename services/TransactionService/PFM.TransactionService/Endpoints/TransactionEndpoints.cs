@@ -85,7 +85,7 @@ public static class TransactionEndpoints
                     newTransaction.Type.ToString().ToLower(),
                     newTransaction.Date,
                     newTransaction.CreatedAt,
-                    null
+                    newTransaction.Category?.Name
                 )
             );
         });
