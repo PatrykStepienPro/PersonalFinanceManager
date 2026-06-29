@@ -6,6 +6,7 @@ echo "Stopping .NET services..."
 pkill -f "PFM.AuthService" 2>/dev/null
 pkill -f "PFM.TransactionService" 2>/dev/null
 pkill -f "PFM.BudgetService" 2>/dev/null
+pkill -f "PFM.NotificationService" 2>/dev/null
 pkill -f "PFM.BFF" 2>/dev/null
 
 echo "Stopping Docker containers..."
