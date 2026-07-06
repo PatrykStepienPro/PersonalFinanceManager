@@ -10,12 +10,12 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const decodeToken = (token: string): User => {
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        return { id: payload.sub, email: payload.email }
-    }
+const decodeToken = (token: string): User => {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    return { id: payload.sub, email: payload.email }
+}
 
+export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(
         localStorage.getItem('token') ? decodeToken(localStorage.getItem('token')!) : null
     )
