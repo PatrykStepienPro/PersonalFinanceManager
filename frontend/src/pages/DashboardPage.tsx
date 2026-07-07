@@ -1,10 +1,29 @@
 import { useAuth } from "../context/AuthContext";
+import { getTransactions } from "../api/transactions.api";
+import { useQuery } from "@tanstack/react-query";
+import AddTransactionForm from "../components/AddTransactionForm";
 
 function DashboardPage() {
     const { logout } = useAuth();
+    const { data, isLoading } = useQuery({
+        queryKey: ["transactions"],
+        queryFn: getTransactions
+    });
 
     return <div>
         <h1>Dashboard</h1>
+        {isLoading && <p>Ładowanie tranzakcji...</p>}
+        <ul>
+            {
+                data?.map(x =>
+                    <li key={x.id}>
+                        <p>{x.id}</p>
+                        <p>{x.description}</p>
+                    </li>
+                )
+            }
+        </ul>
+        <AddTransactionForm />
         <button onClick={logout}>Wyloguj</button>
     </div>
 }
