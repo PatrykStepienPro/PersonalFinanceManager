@@ -31,15 +31,14 @@ function LoginPage() {
 
     return <div className="min-h-screen flex items-center justify-center">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
-            <Card className="w-full max-w-sm">
+            <Card className="w-full">
                 <CardHeader className="justify-center">
                     <CardTitle>
                         Logowanie
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-
-                    <Field>
+                    <Field className="mb-3">
                         <FieldLabel>Email</FieldLabel>
                         <Input {...register("email")} placeholder="Email" />
                         {errors.email && <FieldDescription style={{ color: "red" }}>{errors.email.message}</FieldDescription>}
