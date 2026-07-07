@@ -2,6 +2,8 @@ import { useAuth } from "../context/AuthContext";
 import { getTransactions } from "../api/transactions.api";
 import { useQuery } from "@tanstack/react-query";
 import AddTransactionForm from "../components/AddTransactionForm";
+import BudgetComponent from "../components/BudgetComponent";
+import NotificationComponent from "../components/NotificationComponent";
 
 function DashboardPage() {
     const { logout } = useAuth();
@@ -24,6 +26,8 @@ function DashboardPage() {
             }
         </ul>
         <AddTransactionForm />
+        <BudgetComponent/>
+        <NotificationComponent/>
         <button onClick={logout}>Wyloguj</button>
     </div>
 }
