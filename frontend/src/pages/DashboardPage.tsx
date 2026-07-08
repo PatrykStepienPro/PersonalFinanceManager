@@ -1,34 +1,29 @@
 import { useAuth } from "../context/AuthContext";
-import { getTransactions } from "../api/transactions.api";
-import { useQuery } from "@tanstack/react-query";
-import AddTransactionForm from "../components/AddTransactionForm";
 import BudgetComponent from "../components/BudgetComponent";
 import NotificationComponent from "../components/NotificationComponent";
+import { Button } from "@/components/ui/button";
+import TransactionComponent from "@/components/TransactionComponent";
 
 function DashboardPage() {
     const { logout } = useAuth();
-    const { data, isLoading } = useQuery({
-        queryKey: ["transactions"],
-        queryFn: getTransactions
-    });
 
-    return <div>
-        <h1>Dashboard</h1>
-        {isLoading && <p>Ładowanie tranzakcji...</p>}
-        <ul>
-            {
-                data?.map(x =>
-                    <li key={x.id}>
-                        <p>{x.id}</p>
-                        <p>{x.description}</p>
-                    </li>
-                )
-            }
-        </ul>
-        <AddTransactionForm />
-        <BudgetComponent/>
-        <NotificationComponent/>
-        <button onClick={logout}>Wyloguj</button>
+    return <div className="min-h-screen flex items-center justify-center flex-col">
+        <div className="flex mt-2 gap-2">
+            <h1 className="text-xl font-bold">Personal Finance Manager</h1>
+            <Button onClick={logout}>Wyloguj</Button>
+        </div>
+        <div className="max-w-3xl mx-auto p-6 flex flex-col gap-8">
+            <section>
+                <TransactionComponent />
+            </section>
+
+            <section>
+                <BudgetComponent />
+            </section>
+        </div>
+
+
+        <NotificationComponent />
     </div>
 }
 
