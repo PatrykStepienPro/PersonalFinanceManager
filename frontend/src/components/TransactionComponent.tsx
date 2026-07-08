@@ -16,7 +16,6 @@ export default function TransactionComponent() {
     });
     const [alertOpen, setAlertOpen] = useState(false);
     const queryClient = useQueryClient();
-
     const onClikDelete = async (id: number) => {
         await deleteTransaction(id);
         queryClient.invalidateQueries({ queryKey: ['transactions'] })
@@ -31,12 +30,14 @@ export default function TransactionComponent() {
             <CardContent>
                 <Table>
                     <TableHeader>
-                        <TableHead>Kwota</TableHead>
-                        <TableHead>Opis</TableHead>
-                        <TableHead>Typ</TableHead>
-                        <TableHead>Data</TableHead>
-                        <TableHead>Kategoria</TableHead>
-                        <TableHead>Akcja</TableHead>
+                        <TableRow>
+                            <TableHead>Kwota</TableHead>
+                            <TableHead>Opis</TableHead>
+                            <TableHead>Typ</TableHead>
+                            <TableHead>Data</TableHead>
+                            <TableHead>Kategoria</TableHead>
+                            <TableHead>Akcja</TableHead>
+                        </TableRow>
                     </TableHeader>
                     <TableBody>
                         {data?.map(x =>
@@ -48,7 +49,15 @@ export default function TransactionComponent() {
                                 <TableCell>{x.categoryName}</TableCell>
                                 <TableCell className="text-right">
                                     <DropdownMenu>
-                                        <DropdownMenuTrigger render={<Button variant="ghost" size="icon" className="size-8"><MoreHorizontalIcon /><span className="sr-only">Open menu</span></Button>} />
+                                        <DropdownMenuTrigger render={
+                                            <Button variant="ghost" size="icon" className="size-8">
+                                                <MoreHorizontalIcon />
+                                                <span className="sr-only">
+                                                    Open menu
+                                                </span>
+                                            </Button>
+                                        }>
+                                        </DropdownMenuTrigger>
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem
                                                 onClick={() => setAlertOpen(true)}>

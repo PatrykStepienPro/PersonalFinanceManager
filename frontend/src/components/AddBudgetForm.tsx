@@ -1,9 +1,14 @@
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { createBudget } from "../api/budgets.api";
+import { Field, FieldDescription, FieldLabel } from "./ui/field";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { useCategories } from "@/hooks/useCategories";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const addBudgetSchema = z.object({
     categoryId: z.number().int(),
@@ -16,8 +21,14 @@ const addBudgetSchema = z.object({
 
 type AddBudgetFormData = z.infer<typeof addBudgetSchema>;
 
-export default function AddBudgetForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm<AddBudgetFormData>({
+export default function AddBudgetForm({ onSuccess }: { onSuccess?: () => void }) {
+    const { data: categories = [] } = useCategories();
+    const categoriesDict = categories.map(category => ({
+        label: category.name,
+        value: category.id
+    }));
+
+    const { register, handleSubmit, control, formState: { errors } } = useForm<AddBudgetFormData>({
         resolver: zodResolver(addBudgetSchema)
     });
 
@@ -26,6 +37,7 @@ export default function AddBudgetForm() {
         mutationFn: createBudget,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['budgets'] })
+            onSuccess?.()
         }
     });
 
@@ -37,20 +49,55 @@ export default function AddBudgetForm() {
         });
     }
 
-    return <div style={{ margin: 15 }}>
-        <p>Dodaj budżet</p>
+    return <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register("categoryId", { valueAsNumber: true })} type="number" placeholder="Katagoria"/>
-            {errors.categoryId && <p>{errors.categoryId.message}</p>}
+            <Field className="mb-3">
+                <FieldLabel>Kategoria</FieldLabel>
+                <Controller
+                    name="categoryId"
+                    control={control}
+                    render={({ field }) => (
+                        <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            items={categoriesDict}>
+                            <SelectTrigger className="w-full">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    {
+                                        categoriesDict?.map((category) => (
+                                            <SelectItem key={category.value} value={category.value}>
+                                                {category.label}
+                                            </SelectItem>
+                                        ))
+                                    }
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    )}
+                />
+                {errors.categoryId && <FieldDescription>{errors.categoryId.message}</FieldDescription>}
+            </Field>
 
-            <input {...register("month")} placeholder="Miesiąc"/>
-            {errors.month && <p>{errors.month.message}</p>}
+            <Field className="mb-3">
+                <FieldLabel>
+                    Miesiąc (YYYY-MM)
+                </FieldLabel>
+                <Input {...register("month")} placeholder="Miesiąc" />
+                {errors.month && <FieldDescription>{errors.month.message}</FieldDescription>}
+            </Field>
 
-            <input {...register("limit", { valueAsNumber: true })} type="number" placeholder="Limit" step="0.01"/>
-            {errors.limit && <p>{errors.limit.message}</p>}
+            <Field className="mb-3">
+                <FieldLabel>Kwota</FieldLabel>
+                <Input {...register("limit", { valueAsNumber: true })} type="number" placeholder="Limit" step="0.01"/>
+                {errors.limit && <FieldDescription>{errors.limit.message}</FieldDescription>}
+            </Field>
 
-            <button type="submit">Dodaj</button>
+            <div className="flex justify-end">
+                <Button type="submit" className="justify-self-end">Dodaj</Button>
+            </div>
         </form>
     </div>
-
 }
